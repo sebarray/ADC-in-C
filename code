@@ -1,0 +1,17 @@
+unsigned int valor;
+void setup() {
+  ADMUX=0b01000000; // justificacion a la derecha- vref=1,1v interno- entrada 0
+  ADCSRA=0b00000111;// adc apagado- PRESCALER 128 (125KHZ) 
+  ADCSRB=0b00000000;
+  DIDR0=0b00000001; // desahabilito el buffer interno  de adc0
+ DDRD=0B11000000;
+}
+
+void loop() {
+  {
+  ADCSRA|=((1<<ADEN)|(1<<ADSC));// ACTIVA EL ADC-inicia el converso AD
+  while(ADCSRA&(1<<ADSC));      //ESPERA QUE TERMINE UNA CONVERSION  -CUANDO TERMINA ADSC==1     
+  ADCSRA&=~(1<<ADEN);        BLOQUE DE ADC
+  valor=ADCL;
+  valor|=(ADCH<<8);
+}
